@@ -37,7 +37,7 @@
         },
         methods:{
             paginate(page){
-                if ((!!page) && (page <= this.pages)){
+                if ((page > 0) && (page <= this.pages)){
                     this.$emit('paginate', page);
                 };
             },
