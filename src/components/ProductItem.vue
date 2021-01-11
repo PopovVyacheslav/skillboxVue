@@ -11,31 +11,27 @@
         <span class="catalog__price">
             {{product.price}}₽
         </span>
-        <ul class="colors colors--black">
-            <li class="colors__item" v-for="colorId in product.colorsId" :key="colorId">
-                <label class="colors__label">
-                <input class="colors__radio sr-only" type="radio" :value="colors.find(color => color.id === colorId).hexCode" v-model="color">
-                <span class="colors__value" :style="{'background-color': colors.find(color => color.id === colorId).hexCode}">
-                </span>
-                </label>
-            </li>
-        </ul>
+       <colorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
     </div>
 </template>
 
 <script>
     import colors from "../data/colors";
+    import colorSelector from '../components/ColorSelector'
     export default {
         data() {
             return {
-                color: "#73B6EA",
+                currentColorId: 0,
             };
         },
         props: ['product'],
         computed:{
             colors(){
-              return colors;
+                return colors.filter(color => this.product.colorsId.includes(color.id));
             },
+        },
+        components: {
+            colorSelector
         },
     }
 </script>
