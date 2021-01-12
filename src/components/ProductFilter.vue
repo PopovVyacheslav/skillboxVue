@@ -26,7 +26,7 @@
 
           <fieldset class="form__block">
             <legend class="form__legend">Цвет</legend>
-            <colorSelector :colors='colors' :selected-color.sync='currentColorId'/>
+            <ColorSelector :colors='colors' :selected-color.sync='currentColorId'/>
           </fieldset>
 
           <fieldset class="form__block">
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-    import colorSelector from '../components/ColorSelector';
+    import ColorSelector from '../components/ColorSelector';
     import categories from '../data/categories';
     import colors from '../data/colors';
 
@@ -115,7 +115,7 @@
         },
         props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
         components:{
-          colorSelector,
+          ColorSelector,
         },
         computed:{
             categories(){

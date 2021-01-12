@@ -11,13 +11,13 @@
         <span class="catalog__price">
             {{product.price}}₽
         </span>
-       <colorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
+       <ColorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
     </div>
 </template>
 
 <script>
     import colors from "../data/colors";
-    import colorSelector from '../components/ColorSelector'
+    import ColorSelector from '../components/ColorSelector'
     export default {
         data() {
             return {
@@ -31,7 +31,7 @@
             },
         },
         components: {
-            colorSelector
+            ColorSelector
         },
     }
 </script>
