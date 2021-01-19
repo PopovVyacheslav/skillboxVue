@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="catalog__pic" href="#" @click.prevent="$emit('gotoPage', 'product', {id: product.id})">
+        <a class="catalog__pic" href="#" @click.prevent="gotoPage('product', {id: product.id})">
         <img :src="product.image" :alt="product.title">
         </a>
         <h3 class="catalog__title">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+    import eventBus from '@/eventBus';
     import colors from "@/data/colors";
     import ColorSelector from '@/components/ColorSelector'
     export default {
@@ -32,6 +33,11 @@
         },
         components: {
             ColorSelector
+        },
+        methods:{
+            gotoPage(pageName, pageParams){
+                eventBus.$emit('gotoPage', pageName, pageParams);
+            },
         },
     }
 </script>
