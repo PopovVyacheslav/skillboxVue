@@ -9,14 +9,15 @@
         </a>
         </h3>
         <span class="catalog__price">
-            {{product.price}}₽
+            {{ product.price | numberFormat }}₽
         </span>
        <ColorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
     </div>
 </template>
 
 <script>
-    import eventBus from '@/eventBus';
+    import gotoPage from '@/helpers/gotoPage'
+    import numberFormat from '@/helpers/numberFormat'
     import colors from "@/data/colors";
     import ColorSelector from '@/components/ColorSelector'
     export default {
@@ -26,6 +27,9 @@
             };
         },
         props: ['product'],
+        filters: {
+            numberFormat
+        },
         computed:{
             colors(){
                 return colors.filter(color => this.product.colorsId.includes(color.id));
@@ -35,9 +39,7 @@
             ColorSelector
         },
         methods:{
-            gotoPage(pageName, pageParams){
-                eventBus.$emit('gotoPage', pageName, pageParams);
-            },
+            gotoPage
         },
     }
 </script>
