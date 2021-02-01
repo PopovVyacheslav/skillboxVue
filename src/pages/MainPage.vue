@@ -10,7 +10,7 @@
         </div>
 
         <div class="content__catalog">
-            <ProductFilter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo" :category-id.sync="filterCategoryId" :color-id.sync="filterColorId"/>
+            <ProductFilter :product-filter.sync="productFilter"/>
             <section class="catalog">
                 <ProductList :products="products"/>
                 <AppPagination v-model="currenPage" :count="countProducts" :per-page="productsPerPage"/>
@@ -34,10 +34,12 @@
     },
     data: function() {
       return {
-        filterPriceFrom: 0,
-        filterPriceTo: 0,
-        filterCategoryId: 0,
-        filterColorId: 0,
+        productFilter:{
+          priceFrom: 0,
+          priceTo: 0,
+          categoryId: 0,
+          colorId: 0,
+        },
         currenPage: 1,
         productsPerPage: 3,
       }
@@ -45,17 +47,17 @@
     computed: {
       filteredProducts(){
         let filteredProducts = products;
-        if (this.filterPriceFrom > 0){
-          filteredProducts = filteredProducts.filter(product => product.price >= this.filterPriceFrom);
+        if (this.productFilter.priceFrom > 0){
+          filteredProducts = filteredProducts.filter(product => product.price >= this.productFilter.priceFrom);
         }
-        if (this.filterPriceTo > 0){
-          filteredProducts = filteredProducts.filter(product => product.price <= this.filterPriceTo);
+        if (this.productFilter.priceTo > 0){
+          filteredProducts = filteredProducts.filter(product => product.price <= this.productFilter.priceTo);
         }
-        if (this.filterCategoryId){
-          filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
+        if (this.productFilter.categoryId){
+          filteredProducts = filteredProducts.filter(product => product.categoryId === this.productFilter.categoryId);
         }
-        if (this.filterColorId){
-          filteredProducts = filteredProducts.filter(product => product.colorsId.includes(this.filterColorId));
+        if (this.productFilter.colorId){
+          filteredProducts = filteredProducts.filter(product => product.colorsId.includes(this.productFilter.colorId));
         }
         return filteredProducts;
       },

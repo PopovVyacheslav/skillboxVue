@@ -162,6 +162,11 @@
     import ColorSelector from '@/components/ColorSelector'
 
     export default {
+        data(){
+            return {
+                currentColorId: 0,
+            };
+        },
         props: ['pageParams'],
         filters: {
             numberFormat

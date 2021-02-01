@@ -5,11 +5,11 @@
           <fieldset class="form__block">
             <legend class="form__legend">Цена</legend>
             <label class="form__label form__label--price">
-              <input class="form__input" type="text" name="min-price" v-model.number="currentPriceFrom">
+              <input class="form__input" type="text" name="min-price" v-model.number="currentProductFilter.priceFrom">
               <span class="form__value">От</span>
             </label>
             <label class="form__label form__label--price">
-              <input class="form__input" type="text" name="max-price" v-model.number="currentPriceTo">
+              <input class="form__input" type="text" name="max-price" v-model.number="currentProductFilter.priceTo">
               <span class="form__value">До</span>
             </label>
           </fieldset>
@@ -17,7 +17,7 @@
           <fieldset class="form__block">
             <legend class="form__legend">Категория</legend>
             <label class="form__label form__label--select">
-              <select class="form__select" type="text" name="category" v-model.number="currentCategoryId">
+              <select class="form__select" type="text" name="category" v-model.number="currentProductFilter.categoryId">
                 <option value=0>Все категории</option>
                 <option :value="category.id" v-for="category in categories" :key="category.id"> {{ category.title }}</option>
               </select>
@@ -26,7 +26,7 @@
 
           <fieldset class="form__block">
             <legend class="form__legend">Цвет</legend>
-            <ColorSelector :colors='colors' :selected-color.sync='currentColorId'/>
+            <ColorSelector :colors='colors' :selected-color.sync='currentProductFilter.colorId'/>
           </fieldset>
 
           <fieldset class="form__block">
@@ -100,20 +100,22 @@
 </template>
 
 <script>
-    import ColorSelector from '../components/ColorSelector';
-    import categories from '../data/categories';
-    import colors from '../data/colors';
+    import ColorSelector from '@/components/ColorSelector';
+    import categories from '@/data/categories';
+    import colors from '@/data/colors';
 
     export default {
         data(){
             return {
-                currentPriceFrom: 0,
-                currentPriceTo: 0,
-                currentCategoryId: 0,
-                currentColorId: 0,
+                currentProductFilter:{
+                  priceFrom: 0,
+                  priceTo: 0,
+                  categoryId: 0,
+                  colorId: 0,
+                }
             }
         },
-        props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
+        props: ['productFilter'],
         components:{
           ColorSelector,
         },
@@ -126,31 +128,37 @@
             },
         },
         watch:{
-            priceFrom(value){
-                this.currentPriceFrom = value;
+            currentPriceFrom(value){
+                this.currentProductFilter.priceFrom = value;
             },
-            priceTo(value){
-                this.currentPriceTo = value;
+            currentPriceTo(value){
+                this.currentProductFilter.priceTo = value;
             },
-            categoryId(value){
-                this.currentCategoryId = value;
+            currentCategoryId(value){
+                this.currentProductFilter.categoryId = value;
             },
-            colorId(value){
-                this.currentColorId = value;
+            currentColorId(value){
+                this.currentProductFilter.colorId = value;
             },
         },
         methods:{
             submit(){
-                this.$emit('update:priceFrom', this.currentPriceFrom);
-                this.$emit('update:priceTo', this.currentPriceTo);
-                this.$emit('update:categoryId', this.currentCategoryId);
-                this.$emit('update:colorId', this.currentColorId);
+                // this.$emit('update:priceFrom', this.currentPriceFrom);
+                // this.$emit('update:priceTo', this.currentPriceTo);
+                // this.$emit('update:categoryId', this.currentCategoryId);
+                // this.$emit('update:colorId', this.currentColorId);
+                this.$emit('update:productFilter', Object.assign({}, this.currentProductFilter));
             },
             reset(){
-                this.$emit('update:priceFrom', 0);
-                this.$emit('update:priceTo', 0);
-                this.$emit('update:categoryId', 0);
-                this.$emit('update:colorId', 0);
+                // this.$emit('update:priceFrom', 0);
+                // this.$emit('update:priceTo', 0);
+                // this.$emit('update:categoryId', 0);
+                // this.$emit('update:colorId', 0);
+                this.currentProductFilter.priceFrom = 0;
+                this.currentProductFilter.priceTo = 0;
+                this.currentProductFilter.categoryId = 0;
+                this.currentProductFilter.colorId = 0;
+                this.$emit('update:productFilter', Object.assign({}, this.currentProductFilter));
             },
         },
     }
