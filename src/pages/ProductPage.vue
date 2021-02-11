@@ -33,14 +33,14 @@
                     {{ product.title}}
                 </h2>
                 <div class="item__form">
-                    <form class="form" action="#" method="POST">
+                    <form class="form" action="#" method="POST" @submit.prevent="addToCart">
                         <b class="item__price">
                             {{ product.price | numberFormat }} ₽
                         </b>
 
                         <fieldset class="form__block">
                             <legend class="form__legend">Цвет:</legend>
-                            <ColorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
+                            <colorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
                         </fieldset>
 
                         <fieldset class="form__block">
@@ -75,22 +75,7 @@
                         </fieldset>
 
                         <div class="item__row">
-                            <div class="form__counter">
-                                <button type="button" aria-label="Убрать один товар">
-                                    <svg width="12" height="12" fill="currentColor">
-                                        <use xlink:href="#icon-minus"></use>
-                                    </svg>
-                                </button>
-
-                                <input type="text" value="1" name="count">
-
-                                <button type="button" aria-label="Добавить один товар">
-                                    <svg width="12" height="12" fill="currentColor">
-                                        <use xlink:href="#icon-plus"></use>
-                                    </svg>
-                                </button>
-                            </div>
-
+                            <appChangeAmount :amount.sync='productAmount'/>
                             <button class="button button--primery" type="submit">
                                 В корзину
                             </button>
@@ -159,12 +144,14 @@
     import gotoPage from '@/helpers/gotoPage'
     import colors from "@/data/colors";
     import numberFormat from '@/helpers/numberFormat'
-    import ColorSelector from '@/components/ColorSelector'
+    import colorSelector from '@/components/ColorSelector'
+    import appChangeAmount from '@/components/AppChangeAmount'
 
     export default {
         data(){
             return {
                 currentColorId: 0,
+                productAmount: 1
             };
         },
         props: ['pageParams'],
@@ -183,10 +170,17 @@
             },
         },
         methods:{
-            gotoPage
+            gotoPage,
+            addToCart(){
+                this.$store.commit(
+                    'addProductToCart',
+                    {productId: this.product.id, amount: this.productAmount}
+                )
+            },
         },
         components: {
-            ColorSelector
+            colorSelector,
+            appChangeAmount
         },
     }
 </script>
