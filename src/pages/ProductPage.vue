@@ -141,7 +141,6 @@
 <script>
     import products from '@/data/products';
     import categories from '@/data/categories';
-    import gotoPage from '@/helpers/gotoPage'
     import colors from "@/data/colors";
     import numberFormat from '@/helpers/numberFormat'
     import colorSelector from '@/components/ColorSelector'
@@ -170,7 +169,6 @@
             },
         },
         methods:{
-            gotoPage,
             addToCart(){
                 this.$store.commit(
                     'addProductToCart',

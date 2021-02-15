@@ -143,17 +143,9 @@
         },
         methods:{
             submit(){
-                // this.$emit('update:priceFrom', this.currentPriceFrom);
-                // this.$emit('update:priceTo', this.currentPriceTo);
-                // this.$emit('update:categoryId', this.currentCategoryId);
-                // this.$emit('update:colorId', this.currentColorId);
                 this.$emit('update:productFilter', Object.assign({}, this.currentProductFilter));
             },
             reset(){
-                // this.$emit('update:priceFrom', 0);
-                // this.$emit('update:priceTo', 0);
-                // this.$emit('update:categoryId', 0);
-                // this.$emit('update:colorId', 0);
                 this.currentProductFilter.priceFrom = 0;
                 this.currentProductFilter.priceTo = 0;
                 this.currentProductFilter.categoryId = 0;
