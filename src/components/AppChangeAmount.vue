@@ -1,6 +1,6 @@
 <template>
     <div class="form__counter">
-        <button type="button" aria-label="Убрать один товар" @click.prevent="changeAmount(amount - 1)">
+        <button type="button" aria-label="Убрать один товар" @click.prevent="currentAmount--">
             <svg width="12" height="12" fill="currentColor">
             <use xlink:href="#icon-minus"></use>
             </svg>
@@ -8,7 +8,7 @@
 
         <input type="text" v-model.number="currentAmount">
 
-        <button type="button" aria-label="Добавить один товар" @click.prevent="changeAmount(amount + 1)">
+        <button type="button" aria-label="Добавить один товар" @click.prevent="currentAmount++">
             <svg width="12" height="12" fill="currentColor">
             <use xlink:href="#icon-plus"></use>
             </svg>
@@ -22,18 +22,13 @@ export default {
     computed: {
         currentAmount: {
             set(value) {
-                this.changeAmount(value);
+                if (value >= 0)
+                    this.$emit('update:amount', value);
             },
             get() {
                 return this.amount;
             }
         } 
     },
-    methods: {
-        changeAmount(value) {
-          if (value >= 0)
-            this.$emit('update:amount', value);
-        }
-    }
 }
 </script>

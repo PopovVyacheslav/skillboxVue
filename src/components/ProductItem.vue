@@ -1,7 +1,7 @@
 <template>
     <div>
         <router-link class="catalog__pic" :to="{name: 'product', params: {id: product.id}}">
-        <img :src="product.image" :alt="product.title">
+            <img :src="product.image" :alt="product.title">
         </router-link>
         <h3 class="catalog__title">
         <router-link :to="{name: 'product', params: {id: product.id}}">
@@ -11,12 +11,15 @@
         <span class="catalog__price">
             {{ product.price | numberFormat }}₽
         </span>
-       <ColorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
+       <ColorSelector class="colors--list" :colors='this.colors' :selected-color.sync='currentColorId'/>
     </div>
 </template>
 
+<style>
+    .colors--list{--border-color: #222}
+</style>
+
 <script>
-    import gotoPage from '@/helpers/gotoPage'
     import numberFormat from '@/helpers/numberFormat'
     import colors from "@/data/colors";
     import ColorSelector from '@/components/ColorSelector'
@@ -37,9 +40,6 @@
         },
         components: {
             ColorSelector
-        },
-        methods:{
-            gotoPage
         },
     }
 </script>

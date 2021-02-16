@@ -26,7 +26,7 @@
 
           <fieldset class="form__block">
             <legend class="form__legend">Цвет</legend>
-            <ColorSelector :colors='colors' :selected-color.sync='currentProductFilter.colorId'/>
+            <ColorSelector class="colors--filter" :colors='colors' :selected-color.sync='currentProductFilter.colorId'/>
           </fieldset>
 
           <fieldset class="form__block">
@@ -98,6 +98,10 @@
         </form>
       </aside>
 </template>
+
+<style>
+    .colors--filter{--border-color: #cfcfcf}
+</style>
 
 <script>
     import ColorSelector from '@/components/ColorSelector';

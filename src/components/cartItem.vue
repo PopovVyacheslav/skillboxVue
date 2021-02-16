@@ -4,7 +4,9 @@
             <img :src="item.product.image" width="120" height="120" :alt="item.product.title">
         </div>
         <h3 class="product__title">
-            {{ item.product.title }}
+            <router-link :to="{name: 'product', params: {id: item.product.id}}">
+                {{ item.product.title }}
+            </router-link>
         </h3>
         <span class="product__code">
             Артикул: {{ item.productId }}
@@ -16,7 +18,7 @@
             {{ (item.amount * item.product.price) | numberFormat}} ₽
         </b>
 
-        <button class="product__del button-del" type="button" aria-label="Удалить товар из корзины" @click.prevent="deleteProduct(item.productId)">
+        <button class="product__del button-del" type="button" aria-label="Удалить товар из корзины" @click.prevent="deleteCartProduct(item.productId)">
             <svg width="20" height="20" fill="currentColor">
             <use xlink:href="#icon-close"></use>
             </svg>
@@ -48,7 +50,7 @@
             }
         },
         methods:{
-            ...mapMutations({deleteProduct: 'deleteCartProduct'}),
+            ...mapMutations(['deleteCartProduct']),
         },
     }
 </script>

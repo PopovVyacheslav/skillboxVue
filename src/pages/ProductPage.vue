@@ -40,7 +40,7 @@
 
                         <fieldset class="form__block">
                             <legend class="form__legend">Цвет:</legend>
-                            <colorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
+                            <ColorSelector :colors='this.colors' :selected-color.sync='currentColorId'/>
                         </fieldset>
 
                         <fieldset class="form__block">
@@ -75,7 +75,7 @@
                         </fieldset>
 
                         <div class="item__row">
-                            <appChangeAmount :amount.sync='productAmount'/>
+                            <AppChangeAmount :amount.sync='productAmount'/>
                             <button class="button button--primery" type="submit">
                                 В корзину
                             </button>
@@ -143,8 +143,8 @@
     import categories from '@/data/categories';
     import colors from "@/data/colors";
     import numberFormat from '@/helpers/numberFormat'
-    import colorSelector from '@/components/ColorSelector'
-    import appChangeAmount from '@/components/AppChangeAmount'
+    import ColorSelector from '@/components/ColorSelector'
+    import AppChangeAmount from '@/components/AppChangeAmount'
 
     export default {
         data(){
@@ -168,6 +168,13 @@
                 return colors.filter(color => this.product.colorsId.includes(color.id));
             },
         },
+        watch:{
+            '$route.params.id'(){
+                if (!this.product){
+                    this.$router.replace({name: 'notFound'});
+                }
+            },
+        },
         methods:{
             addToCart(){
                 this.$store.commit(
@@ -177,8 +184,8 @@
             },
         },
         components: {
-            colorSelector,
-            appChangeAmount
+            ColorSelector,
+            AppChangeAmount
         },
     }
 </script>

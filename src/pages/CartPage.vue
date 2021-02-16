@@ -18,7 +18,7 @@
             Корзина
         </h1>
         <span class="content__info">
-            {{ this.totalAmount }} товара
+            {{ this.cartTotalAmount }} товара
         </span>
         </div>
 
@@ -26,7 +26,7 @@
         <form class="cart__form form" action="#" method="POST">
             <div class="cart__field">
                 <ul class="cart__list">
-                    <cartItem v-for="item in products" :key="item.productId" :item="item"/>
+                    <CartItem v-for="item in cartDetailProducts" :key="item.productId" :item="item"/>
                 </ul>
             </div>
 
@@ -35,7 +35,7 @@
                 Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе
             </p>
             <p class="cart__price">
-                Итого: <span>{{ totalPrice | numberFormat }} ₽</span>
+                Итого: <span>{{ cartTotalPrice | numberFormat }} ₽</span>
             </p>
 
             <button class="cart__button button button--primery" type="submit">
@@ -50,17 +50,17 @@
 <script>
     import { mapGetters } from 'vuex';
     import numberFormat from '@/helpers/numberFormat';
-    import cartItem from '@/components/cartItem';
+    import CartItem from '@/components/CartItem';
 
     export default {
         filters: {
             numberFormat,
         },
         computed: {
-            ...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalAmount: 'cartTotalAmount'}),
+            ...mapGetters(['cartDetailProducts', 'cartTotalPrice', 'cartTotalAmount']),
         },
         components: {
-            cartItem
+            CartItem
         },
     }
 </script>
