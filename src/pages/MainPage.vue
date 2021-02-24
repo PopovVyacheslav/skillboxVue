@@ -21,53 +21,75 @@
 
 
 <script>
-  import products from '@/data/products'
-  import ProductList from '@/components/ProductList'
-  import AppPagination from '@/components/AppPagination'
-  import ProductFilter from '@/components/ProductFilter'
+    import products from '@/data/products';
+    import ProductList from '@/components/ProductList';
+    import AppPagination from '@/components/AppPagination';
+    import ProductFilter from '@/components/ProductFilter';
+    import axios from'axios';
 
-  export default {
-    components: {
-      ProductList,
-      AppPagination,
-      ProductFilter,
-    },
-    data: function() {
-      return {
-        productFilter:{
-          priceFrom: 0,
-          priceTo: 0,
-          categoryId: 0,
-          colorId: 0,
+    export default {
+        components: {
+            ProductList,
+            AppPagination,
+            ProductFilter,
         },
-        currenPage: 1,
-        productsPerPage: 3,
-      }
-    },
-    computed: {
-      filteredProducts(){
-        let filteredProducts = products;
-        if (this.productFilter.priceFrom > 0){
-          filteredProducts = filteredProducts.filter(product => product.price >= this.productFilter.priceFrom);
-        }
-        if (this.productFilter.priceTo > 0){
-          filteredProducts = filteredProducts.filter(product => product.price <= this.productFilter.priceTo);
-        }
-        if (this.productFilter.categoryId){
-          filteredProducts = filteredProducts.filter(product => product.categoryId === this.productFilter.categoryId);
-        }
-        if (this.productFilter.colorId){
-          filteredProducts = filteredProducts.filter(product => product.colorsId.includes(this.productFilter.colorId));
-        }
-        return filteredProducts;
-      },
-      products(){
-        const offset = (this.currenPage - 1) * this.productsPerPage;
-        return this.filteredProducts.slice(offset, offset + this.productsPerPage);
-      },
-      countProducts(){
-        return this.filteredProducts.length;
-      },
-    }
-  };
+        data: function() {
+            return {
+                productFilter:{
+                    priceFrom: 0,
+                    priceTo: 0,
+                    categoryId: 0,
+                    colorId: 0,
+                },
+                currenPage: 1,
+                productsPerPage: 3,
+                productData: null,
+            }
+        },
+        computed: {
+            filteredProducts(){
+                let filteredProducts = products;
+                if (this.productFilter.priceFrom > 0){
+                    filteredProducts = filteredProducts.filter(product => product.price >= this.productFilter.priceFrom);
+                }
+                if (this.productFilter.priceTo > 0){
+                    filteredProducts = filteredProducts.filter(product => product.price <= this.productFilter.priceTo);
+                }
+                if (this.productFilter.categoryId){
+                    filteredProducts = filteredProducts.filter(product => product.categoryId === this.productFilter.categoryId);
+                }
+                if (this.productFilter.colorId){
+                    filteredProducts = filteredProducts.filter(product => product.colorsId.includes(this.productFilter.colorId));
+                }
+                return filteredProducts;
+            },
+            products(){
+                return this.productData
+                    ? this.productData.items.map(product => {
+                        return {
+                            ...product,
+                            image: product.image.file.url
+                        }
+                    })
+                    : [];
+            },
+            countProducts(){
+                return this.productData ? this.productData.pagination.total : 0;
+            },
+        },
+        methods: {
+            loadProducts(){
+                axios.get(`http://vue-study.dev.creonit.ru/api/products?page=${this.currenPage}&limit=${this.productsPerPage}`)
+                    .then(response => this.productData = response.data);
+            },
+        },
+        watch:{
+            currenPage(){
+                this.loadProducts();
+            }
+        },
+        created(){
+            this.loadProducts();
+        },
+    };
 </script>

@@ -11,7 +11,7 @@
         <span class="catalog__price">
             {{ product.price | numberFormat }}₽
         </span>
-       <ColorSelector class="colors--list" :colors='this.colors' :selected-color.sync='currentColorId'/>
+       <ColorSelector class="colors--list" :colors='product.colors' :selected-color.sync='currentColorId'/>
     </div>
 </template>
 
