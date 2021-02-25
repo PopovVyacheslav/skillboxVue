@@ -21,11 +21,11 @@
 
 
 <script>
-    import products from '@/data/products';
     import ProductList from '@/components/ProductList';
     import AppPagination from '@/components/AppPagination';
     import ProductFilter from '@/components/ProductFilter';
     import axios from'axios';
+    import {API_BASE_URL} from '@/config';
 
     export default {
         components: {
@@ -47,22 +47,6 @@
             }
         },
         computed: {
-            filteredProducts(){
-                let filteredProducts = products;
-                if (this.productFilter.priceFrom > 0){
-                    filteredProducts = filteredProducts.filter(product => product.price >= this.productFilter.priceFrom);
-                }
-                if (this.productFilter.priceTo > 0){
-                    filteredProducts = filteredProducts.filter(product => product.price <= this.productFilter.priceTo);
-                }
-                if (this.productFilter.categoryId){
-                    filteredProducts = filteredProducts.filter(product => product.categoryId === this.productFilter.categoryId);
-                }
-                if (this.productFilter.colorId){
-                    filteredProducts = filteredProducts.filter(product => product.colorsId.includes(this.productFilter.colorId));
-                }
-                return filteredProducts;
-            },
             products(){
                 return this.productData
                     ? this.productData.items.map(product => {
@@ -79,14 +63,27 @@
         },
         methods: {
             loadProducts(){
-                axios.get(`http://vue-study.dev.creonit.ru/api/products?page=${this.currenPage}&limit=${this.productsPerPage}`)
+                axios
+                    .get(API_BASE_URL + '/api/products',{
+                        params: {
+                            page: this.currenPage,
+                            limit: this.productsPerPage,
+                            categoryId: this.productFilter.categoryId,
+                            colorId: this.productFilter.colorId,
+                            minPrice: this.productFilter.priceFrom,
+                            maxPrice: this.productFilter.priceTo
+                        }
+                    })
                     .then(response => this.productData = response.data);
             },
         },
         watch:{
             currenPage(){
                 this.loadProducts();
-            }
+            },
+            productFilter(){
+                this.loadProducts();
+            },
         },
         created(){
             this.loadProducts();
