@@ -12,6 +12,8 @@
         <div class="content__catalog">
             <ProductFilter :product-filter.sync="productFilter"/>
             <section class="catalog">
+                <div v-if="productsLoading">Загрузка товаров...</div>
+                <div v-if="productsLoadingFailed">Произошла ошибка при загрузке товаров <button @click.prevent="loadProducts">Попробовать еще раз</button> </div>
                 <ProductList :products="products"/>
                 <AppPagination v-model="currenPage" :count="countProducts" :per-page="productsPerPage"/>
             </section>
@@ -44,6 +46,9 @@
                 currenPage: 1,
                 productsPerPage: 3,
                 productData: null,
+                loadProductsTimer: null, // Для эмурилирования медленного соединения
+                productsLoading: false,
+                productsLoadingFailed: false,
             }
         },
         computed: {
@@ -63,18 +68,25 @@
         },
         methods: {
             loadProducts(){
-                axios
-                    .get(API_BASE_URL + '/api/products',{
-                        params: {
-                            page: this.currenPage,
-                            limit: this.productsPerPage,
-                            categoryId: this.productFilter.categoryId,
-                            colorId: this.productFilter.colorId,
-                            minPrice: this.productFilter.priceFrom,
-                            maxPrice: this.productFilter.priceTo
-                        }
-                    })
-                    .then(response => this.productData = response.data);
+                this.productsLoading = true;
+                this.productsLoadingFailed = false;
+                clearTimeout(this.loadProductsTimer);
+                this.loadProductsTimer = setTimeout(() =>{
+                    axios
+                        .get(API_BASE_URL + '/api/products',{
+                            params: {
+                                page: this.currenPage,
+                                limit: this.productsPerPage,
+                                categoryId: this.productFilter.categoryId,
+                                colorId: this.productFilter.colorId,
+                                minPrice: this.productFilter.priceFrom,
+                                maxPrice: this.productFilter.priceTo
+                            }
+                        })
+                        .then(response => this.productData = response.data)
+                        .catch(() => this.productsLoadingFailed = true)
+                        .then(() => this.productsLoading = false);
+                }, 3000);
             },
         },
         watch:{
