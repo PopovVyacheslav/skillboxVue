@@ -29,7 +29,7 @@
 <script>
     import appChangeAmount from '@/components/AppChangeAmount'
     import numberFormat from '@/helpers/numberFormat';
-    import { mapMutations } from 'vuex';
+    import { mapActions } from 'vuex';
 
     export default {
         props: ['item'],
@@ -45,12 +45,12 @@
                     return this.item.amount;
                 },
                 set(value) {
-                    this.$store.commit('updateCartProductAmount', {productId: this.item.productId, amount: value});
+                    this.updateCartProductAmount({productId: this.item.productId, amount: value});
                 }
             }
         },
         methods:{
-            ...mapMutations(['deleteCartProduct']),
+            ...mapActions(['updateCartProductAmount', 'deleteCartProduct']),
         },
     }
 </script>
