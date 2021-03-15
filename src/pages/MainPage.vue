@@ -12,7 +12,7 @@
         <div class="content__catalog">
             <ProductFilter :product-filter.sync="productFilter"/>
             <section class="catalog">
-                <div v-if="productsLoading">Загрузка товаров...</div>
+                <img src="@/../public/img/preloaders.gif" v-if="productsLoading"/>
                 <div v-if="productsLoadingFailed">Произошла ошибка при загрузке товаров <button @click.prevent="loadProducts">Попробовать еще раз</button> </div>
                 <ProductList :products="products"/>
                 <AppPagination v-model="currenPage" :count="countProducts" :per-page="productsPerPage"/>

@@ -82,8 +82,8 @@
                                 В корзину
                             </button>
                         </div>
-                        <div v-show="productAdded">Товар добавлен в корзину</div>
-                        <div v-show="productAddSending">Добавляем товар в корзину</div>
+                        <div v-if="productAdded">Товар добавлен в корзину</div>
+                        <div v-if="productAddSending">Добавляем товар в корзину</div>
                     </form>
                 </div>
             </div>
@@ -190,7 +190,7 @@
             addToCart(){
                 this.productAdded = false;
                 this.productAddSending = true;
-                this.addProductToCart({ productId: this.product.id, amount: this.amount })
+                this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
                     .then(() => {
                         this.productAdded = true;
                         this.productAddSending = false;
