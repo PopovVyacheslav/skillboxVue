@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import products from '@/data/products'
 import axios from 'axios';
 import {API_BASE_URL} from '@/config';
 
@@ -35,7 +34,11 @@ export default new Vuex.Store({
                     amount: item.quantity
                 }
             })
-        }
+        },
+        resetCart(state){
+            state.cartProducts = [];
+            state.cartProductsData = [];
+        },
     },
     getters:{
         cartDetailProducts(state){
@@ -74,7 +77,7 @@ export default new Vuex.Store({
                 });
         },
         addProductToCart(context,{productId, amount}){
-            return (new Promise(resolve => setTimeout(resolve, 1500))) // Для эмуляции задержки
+            return (new Promise(resolve => setTimeout(resolve, 500))) // Для эмуляции задержки
                 .then(() => {
                     return axios
                         .post(API_BASE_URL + '/api/baskets/products',{
