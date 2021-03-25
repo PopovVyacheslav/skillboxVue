@@ -19,8 +19,8 @@
                 </li>
             </ul>
 
-            <h1 class="content__title">
-                Заказ оформлен <span>№ 23621</span>
+            <h1 class="content__title" v-if='cartOrderInfo'>
+                Заказ оформлен <span>№ {{ cartOrderInfo.id }}</span>
             </h1>
         </div>
 
@@ -32,7 +32,7 @@
                         Наши менеджеры свяжутся с&nbsp;Вами в&nbsp;течение часа для уточнения деталей доставки.
                     </p>
 
-                    <ul class="dictionary">
+                    <ul class="dictionary" v-if='cartOrderInfo'>
                         <li class="dictionary__item">
                             <span class="dictionary__key">
                                 Получатель
@@ -76,7 +76,7 @@
                     </ul>
                 </div>
 
-                <div class="cart__block">
+                <div class="cart__block" v-if='cartOrderInfo'>
                     <CartOrder :products="cartOrderInfo.basket.items" :totalPrice="cartOrderInfo.totalPrice"/> 
                 </div>
             </form>
@@ -93,11 +93,24 @@ export default {
         computed:{
             ...mapGetters(['cartOrderInfo'])
         },
-        created(){
-            if(this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id){
-                return;
+        methods:{
+            loadInfo(){
+                if(this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id){
+                    return;
+                }
+                this.$store.dispatch('loadOrderInfo', this.$route.params.id)
+                    .catch(()=>{
+                        this.$router.replace({name: 'notFound'});
+                    });
+            },
+        },
+        watch: {
+            '$route.params.id': {
+                handler() {
+                    this.loadInfo();
+                },
+                immediate: true
             }
-            this.$store.dispatch('loadOrderInfo', this.$route.params.id);
         },
     }
 </script>
